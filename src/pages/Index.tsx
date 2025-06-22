@@ -6,8 +6,11 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Building2, Mail, Users, Loader2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { setEmail as setRegistrationEmail } from '../store/registrationSlice'
+import { useDispatch }                 from 'react-redux'
 
 const Index = () => {
+  const dispatch = useDispatch(); 
   const [email, setEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
@@ -26,14 +29,16 @@ const Index = () => {
     setIsLoading(true);
     
     try {
-      const response = await fetch('https://localhost:8001/api/v1/auth/register-verify', {
+      
+      const response = await fetch('http://localhost:8080/api/v1/auth/register-verify', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ email }),
       });
-
+       
+      
       const data = await response.json();
 
       if (response.ok) {
@@ -41,6 +46,7 @@ const Index = () => {
           title: "Verification Email Sent",
           description: "Please check your email for the verification link.",
         });
+         dispatch(setRegistrationEmail(email)) // Uncomment and fix if you have setEmail action and redux setup
         setEmail('');
       } else {
         toast({
