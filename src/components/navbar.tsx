@@ -15,7 +15,7 @@ export default function Navbar() {
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("userEmail");
-    localStorage.removeItem("feedCursor");
+    //localStorage.removeItem("feedCursor");
     navigate("/login");
   };
 
