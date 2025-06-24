@@ -30,7 +30,7 @@ const Index = () => {
     
     try {
       
-      const response = await fetch('http://localhost:8080/api/v1/auth/register-verify', {
+      const response = await fetch('http://57.159.26.157:8080/api/v1/auth/register-verify', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
