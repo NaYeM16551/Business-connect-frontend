@@ -1,0 +1,58 @@
+name: Frontend CI/CD
+
+on:
+  push:
+    branches:
+      - main
+      - dockerSetup
+  pull_request:
+    branches:
+      - main
+      - dockerSetup
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Copy frontend repo to VM via SSH
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.AZURE_VM_IP }}
+          username: azureuser
+          key: ${{ secrets.AZURE_VM_SSH_KEY }}
+          source: "."
+          target: "~/Business-Connect/Business-connect-Frontend"
+          rm: false
+
+      - name: Run Docker Compose on VM via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.AZURE_VM_IP }}
+          username: azureuser
+          key: ${{ secrets.AZURE_VM_SSH_KEY }}
+          script: |
+            cd ~/Business-Connect
+            docker compose up -d --build frontend
