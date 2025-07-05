@@ -1,26 +1,34 @@
 // src/components/CreatePost.tsx
 
-import { useState, ChangeEvent, FormEvent, useRef, useEffect } from "react";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
-  DialogTrigger,
+  DialogClose,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogDescription,
-  DialogClose,
+  DialogTrigger,
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { Loader2, Paperclip, User, X } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useAppSelector } from "@/store/hooks";
+import { Loader2, Paperclip, User, X } from "lucide-react";
+import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react";
 
 type PreviewFile = {
   file: File;
   preview: string;
 };
 
-export default function CreatePost() {
+interface CreatePostProps {
+  groupId?: number;
+  onPostCreated?: () => void;
+}
+
+export default function CreatePost({
+  groupId,
+  onPostCreated,
+}: CreatePostProps) {
   const [open, setOpen] = useState(false);
   const [content, setContent] = useState("");
   const [files, setFiles] = useState<PreviewFile[]>([]);
@@ -42,7 +50,9 @@ export default function CreatePost() {
 
     picked.forEach((f) => {
       // avoid dup by name+size
-      if (!files.some((pf) => pf.file.name === f.name && pf.file.size === f.size)) {
+      if (
+        !files.some((pf) => pf.file.name === f.name && pf.file.size === f.size)
+      ) {
         const preview = URL.createObjectURL(f);
         newPreviews.push({ file: f, preview });
       }
@@ -75,29 +85,40 @@ export default function CreatePost() {
     setIsLoading(true);
     try {
       const token = localStorage.getItem("token");
-      console.log(token);
       const form = new FormData();
       form.append("content", content);
       files.forEach(({ file }) => form.append("files", file));
 
-      const res = await fetch(
-        "http://localhost:8080/api/v1/posts/create-post",
-        {
-          method: "POST",
-          headers: token ? { Authorization: `Bearer ${token}` } : {},
-          body: form,
-        }
-      );
-      const data = await res.json();
+      // Choose endpoint based on whether this is a group post or regular post
+      const endpoint = groupId
+        ? `http://57.159.26.157:8080/api/groups/${groupId}/posts`
+        : "http://57.159.26.157:8080/api/v1/posts/create-post";
+
+      const res = await fetch(endpoint, {
+        method: "POST",
+        headers: token ? { Authorization: `Bearer ${token}` } : {},
+        body: form,
+      });
 
       if (res.ok) {
-        toast({ title: "Posted!", description: "Your post is live." });
+        toast({
+          title: "Posted!",
+          description: groupId
+            ? "Your group post is live."
+            : "Your post is live.",
+        });
         setContent("");
         // revoke previews
         files.forEach(({ preview }) => URL.revokeObjectURL(preview));
         setFiles([]);
         setOpen(false);
+
+        // Call the callback if provided
+        if (onPostCreated) {
+          onPostCreated();
+        }
       } else {
+        const data = await res.json();
         toast({
           title: "Error",
           description: data.error || "Failed to create post.",
@@ -121,15 +142,23 @@ export default function CreatePost() {
         <div className="bg-white/90 backdrop-blur-sm shadow rounded-lg px-6 py-4 cursor-pointer hover:bg-slate-100 transition">
           <div className="flex items-center space-x-3 text-slate-600">
             <User className="w-6 h-6" />
-            <span className="text-base">What&#39;s on your mind?</span>
+            <span className="text-base">
+              {groupId ? "Share with the group..." : "What's on your mind?"}
+            </span>
           </div>
         </div>
       </DialogTrigger>
 
       <DialogContent className="sm:max-w-lg sm:mx-auto bg-white rounded-lg shadow-xl overflow-hidden">
         <DialogHeader className="relative border-b px-6 py-4">
-          <DialogTitle>Create Post</DialogTitle>
-          <DialogDescription>Share something with your network</DialogDescription>
+          <DialogTitle>
+            {groupId ? "Create Group Post" : "Create Post"}
+          </DialogTitle>
+          <DialogDescription>
+            {groupId
+              ? "Share something with your group"
+              : "Share something with your network"}
+          </DialogDescription>
           <DialogClose asChild>
             <button className="absolute top-3 right-3 p-1 rounded-full hover:bg-slate-100 text-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500">
               <X className="w-4 h-4" />
