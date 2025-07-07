@@ -1,0 +1,9 @@
+{
+  "extends": "./tsconfig.app.json",
+  "compilerOptions": {
+    "forceConsistentCasingInFileNames": false,
+    "types": ["vitest/globals", "node", "jest", "@testing-library/jest-dom"]
+  },
+  "include": ["src", "**/*.test.ts", "**/*.test.tsx", "**/__tests__/**"],
+  "exclude": ["node_modules"]
+}

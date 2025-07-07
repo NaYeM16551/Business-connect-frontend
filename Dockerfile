@@ -8,6 +8,9 @@ RUN npm install
 
 COPY . .
 
+# Run tests before building
+RUN npm test -- --run
+
 RUN npm run build
 
 # --------- Serve with Nginx ---------
