@@ -1,86 +1,77 @@
 name: Frontend CI/CD
 
 on:
-push:
-branches:
-\- main
-\- dockerSetup
-pull\_request:
-branches:
-\- main
-\- dockerSetup
+  push:
+    branches:
+      - main
+      - dockerSetup
+  pull_request:
+    branches:
+      - main
+      - dockerSetup
 
 jobs:
-test:
-runs-on: ubuntu-latest
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-```
-steps:
-  - name: Checkout code
-    uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
 
-  - name: Set up Node.js
-    uses: actions/setup-node@v4
-    with:
-      node-version: "20"
-      cache: "npm"
+      - name: Install dependencies
+        run: npm ci
 
-  - name: Install dependencies
-    run: npm ci
+      - name: Run tests
+        run: npm test -- --run
 
-  - name: Run tests
-    run: npm test -- --run
-```
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-build:
-needs: test
-runs-on: ubuntu-latest
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
 
-```
-steps:
-  - name: Checkout code
-    uses: actions/checkout@v4
+      - name: Install dependencies
+        run: npm ci
 
-  - name: Set up Node.js
-    uses: actions/setup-node@v4
-    with:
-      node-version: "20"
-      cache: "npm"
+      - name: Build
+        run: npm run build
 
-  - name: Install dependencies
-    run: npm ci
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/dockerSetup'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-  - name: Build
-    run: npm run build
-```
+      - name: Copy frontend folder to VM via SSH
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.AZURE_VM_IP }}
+          username: azureuser
+          key: ${{ secrets.AZURE_VM_SSH_KEY }}
+          source: 'Business-connect-frontend/**'
+          target: '~/Business-Connect/Business-connect-frontend'
+          rm: true
 
-deploy:
-needs: build
-runs-on: ubuntu-latest
-if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/dockerSetup'
-
-```
-steps:
-  - name: Checkout code
-    uses: actions/checkout@v4
-
-  - name: Copy frontend folder to VM via SSH
-    uses: appleboy/scp-action@v0.1.7
-    with:
-      host: ${{ secrets.AZURE_VM_IP }}
-      username: azureuser
-      key: ${{ secrets.AZURE_VM_SSH_KEY }}
-      source: "Business-connect-frontend/**"
-      target: "~/Business-Connect/Business-connect-frontend"
-      rm: true
-
-  - name: Run Docker Compose on VM via SSH
-    uses: appleboy/ssh-action@v1.0.3
-    with:
-      host: ${{ secrets.AZURE_VM_IP }}
-      username: azureuser
-      key: ${{ secrets.AZURE_VM_SSH_KEY }}
-      script: |
-        cd ~/Business-Connect
-        docker compose up -d --build frontend
-```
+      - name: Run Docker Compose on VM via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.AZURE_VM_IP }}
+          username: azureuser
+          key: ${{ secrets.AZURE_VM_SSH_KEY }}
+          script: |
+            cd ~/Business-Connect
+            docker compose up -d --build frontend
