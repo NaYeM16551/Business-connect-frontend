@@ -1,14 +1,7 @@
 // src/components/Navbar.tsx
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import {
   Bell,
   Briefcase,
-  ChevronDown,
   Home,
   LogOut,
   MessageSquare,
@@ -53,25 +46,6 @@ export default function Navbar() {
               <Users className="w-5 h-5" />
               <span>My Network</span>
             </Link>
-            <DropdownMenu>
-              <DropdownMenuTrigger className="flex items-center space-x-1 text-slate-700 hover:text-blue-600 outline-none">
-                <Users className="w-5 h-5" />
-                <span>Groups</span>
-                <ChevronDown className="w-4 h-4" />
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="start" className="w-48">
-                <DropdownMenuItem asChild>
-                  <Link to="/groups/my-groups" className="w-full">
-                    My Groups
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/groups/explore" className="w-full">
-                    Explore Groups
-                  </Link>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
             <Link
               to="/jobs"
               className="flex items-center space-x-1 text-slate-700 hover:text-blue-600"
@@ -80,11 +54,11 @@ export default function Navbar() {
               <span>Jobs</span>
             </Link>
             <Link
-              to="/messaging"
+              to="/messages"
               className="flex items-center space-x-1 text-slate-700 hover:text-blue-600"
             >
               <MessageSquare className="w-5 h-5" />
-              <span>Messaging</span>
+              <span>Messages</span>
             </Link>
             <Link
               to="/notifications"

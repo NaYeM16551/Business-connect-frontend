@@ -17,10 +17,15 @@ import Login from "./pages/Login";
 import MyGroups from "./pages/MyGroups";
 import NotFound from "./pages/NotFound";
 import VerifyEmail from "./pages/VerifyEmail";
+import MessageList from "./pages/messagingFront";
+import ChatPage from "./pages/chatpage";
+import { getCurrentUserIdFromToken } from "./auth";
 
 const queryClient = new QueryClient();
 
 export default function App() {
+  const CurrentUserId = getCurrentUserIdFromToken();
+
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
@@ -90,6 +95,9 @@ export default function App() {
               </RequireAuth>
             }
           />
+
+          <Route path="/messages" element={<MessageList currentUserId={CurrentUserId} />} />
+           <Route path="/chat/:receiverId" element={<ChatPage currentUserId={CurrentUserId} />} />
 
           {/* 404 */}
           <Route path="*" element={<NotFound />} />
