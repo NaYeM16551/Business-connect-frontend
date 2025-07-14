@@ -44,7 +44,7 @@ export default function CreateGroup() {
     setIsSubmitting(true);
 
     try {
-      const res = await fetch("http://57.159.26.157:8080/api/groups", {
+      const res = await fetch("http://localhost:8080/api/groups", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

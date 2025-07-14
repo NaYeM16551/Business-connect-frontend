@@ -52,7 +52,7 @@ export default function Step3({ onBack }: Props) {
       achievements,
     };
 
-    const res = await fetch("http://57.159.26.157:8080/api/v1/auth/register", {
+    const res = await fetch("http://localhost:8080/api/v1/auth/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),

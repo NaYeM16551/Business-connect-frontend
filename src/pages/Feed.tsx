@@ -91,7 +91,7 @@ export default function Feed() {
       params.set("lastPostTime", initialTime);
     }
 
-    const res = await fetch(`http://57.159.26.157:8080/api/v1/feed?${params}`, {
+    const res = await fetch(`http://localhost:8080/api/v1/feed?${params}`, {
       headers: { Authorization: `Bearer ${token}` },
       signal,
     });
