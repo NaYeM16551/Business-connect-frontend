@@ -65,7 +65,7 @@ export default function MessageFront({ currentUserId }: MessageFrontProps) {
 
         // Fetch connections (following list)
         const connectionsRes = await fetch(
-          "http://localhost:8080/api/v1/connections/following",
+          "http://57.159.26.157:8080/api/v1/connections/following",
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -82,7 +82,7 @@ export default function MessageFront({ currentUserId }: MessageFrontProps) {
 
         // Fetch existing conversations
         const conversationsRes = await fetch(
-          `http://localhost:8080/api/v1/${currentUserId}/messages`,
+          `http://57.159.26.157:8080/api/v1/${currentUserId}/messages`,
           {
             headers: {
               Authorization: `Bearer ${token}`,

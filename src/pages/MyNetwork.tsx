@@ -47,7 +47,7 @@ export default function MyNetwork() {
     queryKey: ["myConnections"],
     queryFn: async () => {
       const res = await fetch(
-        "http://localhost:8080/api/v1/connections/following",
+        "http://57.159.26.157:8080/api/v1/connections/following",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -69,7 +69,7 @@ export default function MyNetwork() {
     setUnfollowingStates((prev) => ({ ...prev, [userId]: true }));
     try {
       const res = await fetch(
-        `http://localhost:8080/api/v1/connections/unfollow/${userId}`,
+        `http://57.159.26.157:8080/api/v1/connections/unfollow/${userId}`,
         {
           method: "DELETE",
           headers: {

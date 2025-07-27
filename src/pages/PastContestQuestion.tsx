@@ -16,7 +16,7 @@ const PastContestQuestionsPage = ({ currentUserId }: { currentUserId: number }) 
 
   useEffect(() => {
     axios
-      .get(`http://localhost:8080/api/v1/${currentUserId}/contests/${contestId}/questions`)
+      .get(`http://57.159.26.157:8080/api/v1/${currentUserId}/contests/${contestId}/questions`)
       .then((res) => {
         setQuestions(res.data);
         setLoading(false);

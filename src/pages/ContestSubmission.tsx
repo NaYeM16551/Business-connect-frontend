@@ -23,7 +23,7 @@ const ContestSubmissionsPage = ({ currentUserId }: { currentUserId: number }) =>
 
   const fetchSubmissions = () => {
     axios
-      .get(`http://localhost:8080/api/v1/${currentUserId}/contests/${contestId}/allsubmissions`, {
+      .get(`http://57.159.26.157:8080/api/v1/${currentUserId}/contests/${contestId}/allsubmissions`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -52,7 +52,7 @@ const ContestSubmissionsPage = ({ currentUserId }: { currentUserId: number }) =>
 
     axios
       .put(
-        `http://localhost:8080/api/v1/${currentUserId}/contests/${contestId}/allsubmissions/${submissionId}/grade?grade=${grade}`,
+        `http://57.159.26.157:8080/api/v1/${currentUserId}/contests/${contestId}/allsubmissions/${submissionId}/grade?grade=${grade}`,
         {},
         {
           headers: {

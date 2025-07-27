@@ -36,7 +36,7 @@ const VerifyEmail = () => {
     (async (t: string) => {
       try {
         const response = await fetch(
-          `http://localhost:8080/api/v1/auth/register-verify?token=${t}`,
+          `http://57.159.26.157:8080/api/v1/auth/register-verify?token=${t}`,
           {
             method: "GET",
             headers: { "Content-Type": "application/json" },

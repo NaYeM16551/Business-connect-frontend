@@ -9,7 +9,7 @@
 
 //   useEffect(() => {
 //     axios
-//       .get(`http://localhost:8080/api/v1/${currentUserId}/contests/myContests`, {
+//       .get(`http://57.159.26.157:8080/api/v1/${currentUserId}/contests/myContests`, {
 //         headers: {
 //           Authorization: `Bearer ${localStorage.getItem("token")}`,
 //         },
@@ -51,7 +51,7 @@ const MyContestsPage = ({ currentUserId }: { currentUserId: number }) => {
 
   const fetchContests = () => {
     axios
-      .get(`http://localhost:8080/api/v1/${currentUserId}/contests/myContests`, {
+      .get(`http://57.159.26.157:8080/api/v1/${currentUserId}/contests/myContests`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -62,7 +62,7 @@ const MyContestsPage = ({ currentUserId }: { currentUserId: number }) => {
 
   const handleStartContest = (contestId: number) => {
     axios
-      .put(`http://localhost:8080/api/v1/${currentUserId}/contests/${contestId}/start`, {}, {
+      .put(`http://57.159.26.157:8080/api/v1/${currentUserId}/contests/${contestId}/start`, {}, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -76,7 +76,7 @@ const MyContestsPage = ({ currentUserId }: { currentUserId: number }) => {
 
   const handleFinishContest = (contestId: number) => {
     axios
-      .put(`http://localhost:8080/api/v1/${currentUserId}/contests/${contestId}/finish`, {}, {
+      .put(`http://57.159.26.157:8080/api/v1/${currentUserId}/contests/${contestId}/finish`, {}, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },

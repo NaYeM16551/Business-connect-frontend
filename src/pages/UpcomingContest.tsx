@@ -20,10 +20,10 @@ const UpcomingContests: React.FC<UpcomingContestsPageProps> = ({ currentUserId }
   useEffect(() => {
     const fetchContests = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/api/v1/${currentUserId}/contests/UpcomingContests`); // Adjust your backend route here
+        const response = await axios.get(`http://57.159.26.157:8080/api/v1/${currentUserId}/contests/UpcomingContests`); // Adjust your backend route here
         setContests(response.data);
         setLoading(false);
-      } catch (err: any) {
+      } catch (err: unknown) {
         setError("Failed to load contests");
         setLoading(false);
       }

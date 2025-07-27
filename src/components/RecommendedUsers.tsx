@@ -50,7 +50,7 @@ export const RecommendedUsers: React.FC<RecommendedUsersProps> = ({
     queryKey: ["recommendedUsers", limit],
     queryFn: async () => {
       const res = await fetch(
-        `http://localhost:8080/api/v1/recommended/users?limit=${limit}`,
+        `http://57.159.26.157:8080/api/v1/recommended/users?limit=${limit}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -69,7 +69,7 @@ export const RecommendedUsers: React.FC<RecommendedUsersProps> = ({
     setFollowingStates((prev) => ({ ...prev, [userId]: true }));
     try {
       const res = await fetch(
-        `http://localhost:8080/api/v1/connections/follow/${userId}`,
+        `http://57.159.26.157:8080/api/v1/connections/follow/${userId}`,
         {
           method: "POST",
           headers: {

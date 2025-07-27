@@ -16,7 +16,7 @@
 //   const [newMessage, setNewMessage] = useState("");
 
 //   const connectWebSocket = () => {
-//     const socket = new SockJS("http://localhost:8080/ws");
+//     const socket = new SockJS("http://57.159.26.157:8080/ws");
 //     stompClient = over(socket);
 //     stompClient.connect({}, () => {
 //       stompClient.subscribe(`/user/${currentUserId}/queue/messages`, (msg) => {
@@ -97,10 +97,10 @@
 //      // Frontend (React)
 //     const token = localStorage.getItem("token");
 //     console.log("Connecting with token:", token);
-//     //const socket = new SockJS(`http://localhost:8080/ws?token=${token}`);
+//     //const socket = new SockJS(`http://57.159.26.157:8080/ws?token=${token}`);
 //     //const stompClient = over(socket);
 
-//     const socket = new SockJS(`http://localhost:8080/ws?token=${token}`); // Your WebSocket endpoint
+//     const socket = new SockJS(`http://57.159.26.157:8080/ws?token=${token}`); // Your WebSocket endpoint
 //     const client = over(socket);
 //     stompClientRef.current = client;
 
@@ -233,7 +233,7 @@ export default function ChatPage({ currentUserId }: { currentUserId: number }) {
   const deleteMessage = async (id: number) => {
     try {
       const res = await fetch(
-        `http://localhost:8080/api/v1/messages/delete/${id}`,
+        `http://57.159.26.157:8080/api/v1/messages/delete/${id}`,
         {
           method: "DELETE",
           headers: {
@@ -263,7 +263,7 @@ export default function ChatPage({ currentUserId }: { currentUserId: number }) {
           `Loading chat history for conversation ${currentUserId} -> ${numericReceiverId}`
         );
         const res = await fetch(
-          `http://localhost:8080/api/v1/${currentUserId}/messages/chat/${numericReceiverId}`,
+          `http://57.159.26.157:8080/api/v1/${currentUserId}/messages/chat/${numericReceiverId}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -304,7 +304,7 @@ export default function ChatPage({ currentUserId }: { currentUserId: number }) {
       }
 
       console.log("Establishing new WebSocket connection...");
-      const socket = new SockJS(`http://localhost:8080/ws?token=${token}`);
+      const socket = new SockJS(`http://57.159.26.157:8080/ws?token=${token}`);
       const client = over(socket);
       stompClientRef.current = client;
 

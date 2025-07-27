@@ -22,7 +22,7 @@ const LiveContestsPage = ({ currentUserId }: LiveContestsPageProps) => {
   useEffect(() => {
   console.log("Fetching live contests for user:", currentUserId);
   axios
-    .get(`http://localhost:8080/api/v1/${currentUserId}/contests/LiveContests`, {
+    .get(`http://57.159.26.157:8080/api/v1/${currentUserId}/contests/LiveContests`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },

@@ -16,7 +16,7 @@ const PastContestsPage = ({ currentUserId }: { currentUserId: number }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios.get(`http://localhost:8080/api/v1/${currentUserId}/contests/PastContests`).then((res) => {
+    axios.get(`http://57.159.26.157:8080/api/v1/${currentUserId}/contests/PastContests`).then((res) => {
       setContests(res.data);
     });
   }, []);

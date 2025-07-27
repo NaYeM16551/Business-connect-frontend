@@ -44,7 +44,7 @@ export default function GroupDetail() {
   }, [token]);
 
   const fetchGroupDetails = async (): Promise<Group> => {
-    const res = await fetch(`http://localhost:8080/api/groups/${groupId}`, {
+    const res = await fetch(`http://57.159.26.157:8080/api/groups/${groupId}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
     if (!res.ok) {
@@ -55,7 +55,7 @@ export default function GroupDetail() {
 
   const fetchGroupMembers = async (): Promise<GroupMember[]> => {
     const res = await fetch(
-      `http://localhost:8080/api/groups/${groupId}/members`,
+      `http://57.159.26.157:8080/api/groups/${groupId}/members`,
       {
         headers: { Authorization: `Bearer ${token}` },
       }
@@ -90,7 +90,7 @@ export default function GroupDetail() {
   const joinGroup = async () => {
     try {
       const res = await fetch(
-        `http://localhost:8080/api/groups/${groupId}/join`,
+        `http://57.159.26.157:8080/api/groups/${groupId}/join`,
         {
           method: "POST",
           headers: { Authorization: `Bearer ${token}` },
@@ -119,7 +119,7 @@ export default function GroupDetail() {
   const leaveGroup = async () => {
     try {
       const res = await fetch(
-        `http://localhost:8080/api/groups/${groupId}/leave`,
+        `http://57.159.26.157:8080/api/groups/${groupId}/leave`,
         {
           method: "POST",
           headers: { Authorization: `Bearer ${token}` },

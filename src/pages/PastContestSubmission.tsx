@@ -17,7 +17,7 @@ const MySubmissionsPage = ({ currentUserId }: { currentUserId: number }) => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:8080/api/v1/${currentUserId}/contests/${contestId}/submissions`, {
+      .get(`http://57.159.26.157:8080/api/v1/${currentUserId}/contests/${contestId}/submissions`, {
         params: { id: userId },
       })
       .then((res) => setSubmissions(res.data));

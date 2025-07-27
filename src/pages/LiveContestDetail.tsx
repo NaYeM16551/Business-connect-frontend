@@ -23,7 +23,7 @@
 // //   const [remainingTime, setRemainingTime] = useState<string>("");
 
 // //   useEffect(() => {
-// //     axios.get(`http://localhost:8080/api/v1/1/contests/${contestId}/GetAllQuestions`, {
+// //     axios.get(`http://57.159.26.157:8080/api/v1/1/contests/${contestId}/GetAllQuestions`, {
 // //       headers: {
 // //         Authorization: `Bearer ${localStorage.getItem("token")}`,
 // //       },
@@ -32,7 +32,7 @@
 // //     });
 
 // //     const fetchContest = async () => {
-// //       const res = await axios.get(`http://localhost:8080/api/v1/${currentUserId}/contests/${contestId}`, {
+// //       const res = await axios.get(`http://57.159.26.157:8080/api/v1/${currentUserId}/contests/${contestId}`, {
 // //         headers: {
 // //           Authorization: `Bearer ${localStorage.getItem("token")}`,
 // //         },
@@ -58,7 +58,7 @@
 // //     if (!file) return;
 // //     const formData = new FormData();
 // //     formData.append("file", file);
-// //     await axios.post(`http://localhost:8080/api/v1/1/contests/${contestId}/questions/${questionId}`, formData,
+// //     await axios.post(`http://57.159.26.157:8080/api/v1/1/contests/${contestId}/questions/${questionId}`, formData,
 // //       {
 // //         headers: {
 // //           "Content-Type": "multipart/form-data",
@@ -129,7 +129,7 @@
 
 //   const fetchQuestions = async () => {
 //     const res = await axios.get(
-//       `http://localhost:8080/api/v1/${currentUserId}/contests/${contestId}/GetAllQuestions`,
+//       `http://57.159.26.157:8080/api/v1/${currentUserId}/contests/${contestId}/GetAllQuestions`,
 //       {
 //         headers: {
 //           Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -144,7 +144,7 @@
 
 //     const fetchContest = async () => {
 //       const res = await axios.get(
-//         `http://localhost:8080/api/v1/${currentUserId}/contests/${contestId}`,
+//         `http://57.159.26.157:8080/api/v1/${currentUserId}/contests/${contestId}`,
 //         {
 //           headers: {
 //             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -176,7 +176,7 @@
 //       const formData = new FormData();
 //       formData.append("file", file);
 //       await axios.post(
-//         `http://localhost:8080/api/v1/${currentUserId}/contests/${contestId}/questions/${questionId}`,
+//         `http://57.159.26.157:8080/api/v1/${currentUserId}/contests/${contestId}/questions/${questionId}`,
 //         formData,
 //         {
 //           headers: {
@@ -194,7 +194,7 @@
 
 //   const handleDelete = async (submissionId: number) => {
 //   try {
-//     await axios.delete(`http://localhost:8080/api/v1/${currentUserId}/contests/${contestId}/submissions/${submissionId}`, {
+//     await axios.delete(`http://57.159.26.157:8080/api/v1/${currentUserId}/contests/${contestId}/submissions/${submissionId}`, {
 //       headers: {
 //         Authorization: `Bearer ${localStorage.getItem("token")}`,
 //       },
@@ -277,7 +277,7 @@ const LiveContestDetailPage = ({ currentUserId }: LiveContestDetailPageProps) =>
 
   useEffect(() => {
     const fetchQuestions = async () => {
-      const res = await axios.get(`http://localhost:8080/api/v1/${currentUserId}/contests/${contestId}/GetAllQuestions`, {
+      const res = await axios.get(`http://57.159.26.157:8080/api/v1/${currentUserId}/contests/${contestId}/GetAllQuestions`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -286,7 +286,7 @@ const LiveContestDetailPage = ({ currentUserId }: LiveContestDetailPageProps) =>
     };
 
     const fetchContest = async () => {
-      const res = await axios.get(`http://localhost:8080/api/v1/${currentUserId}/contests/${contestId}`, {
+      const res = await axios.get(`http://57.159.26.157:8080/api/v1/${currentUserId}/contests/${contestId}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -323,7 +323,7 @@ const LiveContestDetailPage = ({ currentUserId }: LiveContestDetailPageProps) =>
     formData.append("file", file);
 
     const res = await axios.post(
-      `http://localhost:8080/api/v1/${currentUserId}/contests/${contestId}/questions/${questionId}`,
+      `http://57.159.26.157:8080/api/v1/${currentUserId}/contests/${contestId}/questions/${questionId}`,
       formData,
       {
         headers: {
@@ -352,7 +352,7 @@ const LiveContestDetailPage = ({ currentUserId }: LiveContestDetailPageProps) =>
 
   const handleDelete = async (questionId: number, submissionId: number) => {
     try {
-      await axios.delete(`http://localhost:8080/api/v1/${currentUserId}/contests/${contestId}/submissions/${submissionId}`, {
+      await axios.delete(`http://57.159.26.157:8080/api/v1/${currentUserId}/contests/${contestId}/submissions/${submissionId}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },

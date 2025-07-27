@@ -10,7 +10,7 @@ const ContestQuestionsPage = ({ currentUserId }: { currentUserId: number }) => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:8080/api/v1/${currentUserId}/contests/${contestId}/GetAllQuestions`, {
+      .get(`http://57.159.26.157:8080/api/v1/${currentUserId}/contests/${contestId}/GetAllQuestions`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },

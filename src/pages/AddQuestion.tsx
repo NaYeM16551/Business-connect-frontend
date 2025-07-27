@@ -13,7 +13,7 @@ const AddQuestionPage = ({ currentUserId }: { currentUserId: number }) => {
   const handleSubmit = () => {
     axios
       .post(
-        `http://localhost:8080/api/v1/${currentUserId}/contests/${contestId}/MakeQuestion`,
+        `http://57.159.26.157:8080/api/v1/${currentUserId}/contests/${contestId}/MakeQuestion`,
         {contestId, title, marks, },
         {
           headers: {

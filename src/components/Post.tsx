@@ -109,7 +109,7 @@ export const Post: React.FC<PostProps> = ({ post, token, onPostUpdate }) => {
 
     try {
       const res = await fetch(
-        `http://localhost:8080/api/v1/posts/like/${post.postId}`,
+        `http://57.159.26.157:8080/api/v1/posts/like/${post.postId}`,
         {
           method: "POST",
           headers: {
@@ -161,7 +161,7 @@ export const Post: React.FC<PostProps> = ({ post, token, onPostUpdate }) => {
     setLoadingComments(true);
     try {
       const res = await fetch(
-        `http://localhost:8080/api/v1/posts/comments/${post.postId}`,
+        `http://57.159.26.157:8080/api/v1/posts/comments/${post.postId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -189,7 +189,7 @@ export const Post: React.FC<PostProps> = ({ post, token, onPostUpdate }) => {
     setPostingComment(true);
     try {
       const res = await fetch(
-        `http://localhost:8080/api/v1/posts/comment/${post.postId}`,
+        `http://57.159.26.157:8080/api/v1/posts/comment/${post.postId}`,
         {
           method: "POST",
           headers: {
@@ -220,7 +220,7 @@ export const Post: React.FC<PostProps> = ({ post, token, onPostUpdate }) => {
     setSharing(true);
     try {
       const res = await fetch(
-        `http://localhost:8080/api/v1/posts/share/${post.postId}`,
+        `http://57.159.26.157:8080/api/v1/posts/share/${post.postId}`,
         {
           method: "POST",
           headers: {

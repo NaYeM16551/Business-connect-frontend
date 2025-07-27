@@ -32,7 +32,7 @@ export default function MyGroups() {
   }, [token]);
 
   const fetchMyGroups = async (): Promise<Group[]> => {
-    const res = await fetch("http://localhost:8080/api/groups/my-groups", {
+    const res = await fetch("http://57.159.26.157:8080/api/groups/my-groups", {
       headers: { Authorization: `Bearer ${token}` },
     });
     if (!res.ok) {

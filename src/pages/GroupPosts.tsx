@@ -56,7 +56,7 @@ export default function GroupPosts() {
   }, [token]);
 
   const fetchGroupDetails = async (): Promise<Group> => {
-    const res = await fetch(`http://localhost:8080/api/groups/${groupId}`, {
+    const res = await fetch(`http://57.159.26.157:8080/api/groups/${groupId}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
     if (!res.ok) {
@@ -69,7 +69,7 @@ export default function GroupPosts() {
     pageParam = 0,
   }): Promise<GroupPostsResponse> => {
     const res = await fetch(
-      `http://localhost:8080/api/groups/${groupId}/posts?page=${pageParam}&size=10`,
+      `http://57.159.26.157:8080/api/groups/${groupId}/posts?page=${pageParam}&size=10`,
       {
         headers: { Authorization: `Bearer ${token}` },
       }

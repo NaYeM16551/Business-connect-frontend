@@ -15,7 +15,7 @@ const LeaderboardPage = ({ currentUserId }: { currentUserId: number }) => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:8080/api/v1/${currentUserId}/contests/${contestId}/leaderboard`)
+      .get(`http://57.159.26.157:8080/api/v1/${currentUserId}/contests/${contestId}/leaderboard`)
       .then((res) => setLeaderboard(res.data));
   }, [contestId]);
 

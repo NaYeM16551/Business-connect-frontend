@@ -37,10 +37,10 @@ export default function ExploreGroups() {
 
   const fetchGroups = async (): Promise<Group[]> => {
     const url = searchQuery
-      ? `http://localhost:8080/api/groups/search?query=${encodeURIComponent(
+      ? `http://57.159.26.157:8080/api/groups/search?query=${encodeURIComponent(
           searchQuery
         )}`
-      : "http://localhost:8080/api/groups/search";
+      : "http://57.159.26.157:8080/api/groups/search";
 
     const res = await fetch(url, {
       headers: { Authorization: `Bearer ${token}` },
@@ -65,7 +65,7 @@ export default function ExploreGroups() {
   const joinGroup = async (groupId: number) => {
     try {
       const res = await fetch(
-        `http://localhost:8080/api/groups/${groupId}/join`,
+        `http://57.159.26.157:8080/api/groups/${groupId}/join`,
         {
           method: "POST",
           headers: { Authorization: `Bearer ${token}` },

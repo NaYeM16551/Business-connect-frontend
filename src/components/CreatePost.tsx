@@ -91,8 +91,8 @@ export default function CreatePost({
 
       // Choose endpoint based on whether this is a group post or regular post
       const endpoint = groupId
-        ? `http://localhost:8080/api/groups/${groupId}/posts`
-        : "http://localhost:8080/api/v1/posts/create-post";
+        ? `http://57.159.26.157:8080/api/groups/${groupId}/posts`
+        : "http://57.159.26.157:8080/api/v1/posts/create-post";
 
       const res = await fetch(endpoint, {
         method: "POST",
