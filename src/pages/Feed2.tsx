@@ -1,13 +1,8 @@
 import CreatePost from "@/components/CreatePost";
 import Navbar from "@/components/navbar";
 import Post from "@/components/Post";
-import ProfileCard from "@/components/ProfileCard";
 import RecommendedUsers from "@/components/RecommendedUsers";
-import {
-  QueryFunctionContext,
-  useInfiniteQuery,
-  useQueryClient,
-} from "@tanstack/react-query";
+import { QueryFunctionContext, useInfiniteQuery } from "@tanstack/react-query";
 import { useEffect, useMemo, useState } from "react";
 import { Navigate } from "react-router-dom";
 
@@ -28,7 +23,6 @@ interface FeedItem {
   parentAuthorAvatarUrl?: string | null;
   parentAuthorId?: number | null;
   parentPostContentSnippet?: string | null;
-  parentMediaUrls?: string[];
 }
 
 interface FeedResponse {
@@ -51,37 +45,19 @@ type FeedQueryContext = QueryFunctionContext<["feed"], Cursor>;
 export default function Feed() {
   const token = localStorage.getItem("token") || "";
   const [isTokenValid, setIsTokenValid] = useState(false);
-  const queryClient = useQueryClient();
 
   // "now" for the very first fetch
   const initialTime = useMemo(() => new Date().toISOString(), []);
 
-  // restore & validate saved cursor
-  const savedCursor = useMemo<Cursor | null>(() => {
-    const raw = localStorage.getItem("feedCursor");
-    if (!raw) return null;
+  // Load cursor from localStorage if available
+  const savedCursor = useMemo(() => {
     try {
-      const obj = JSON.parse(raw);
-      if (
-        typeof obj.rankScore === "number" &&
-        typeof obj.postId === "number" &&
-        typeof obj.lastDateTime === "string"
-      ) {
-        return obj;
-      }
+      const saved = localStorage.getItem("feedCursor");
+      return saved ? JSON.parse(saved) : null;
     } catch {
-      // invalid JSON
+      return null;
     }
-    localStorage.removeItem("feedCursor");
-    return null;
   }, []);
-
-  // UseEffect to check if token exists and set valid token flag
-  useEffect(() => {
-    if (token) {
-      setIsTokenValid(true);
-    }
-  }, [token]);
 
   // fetcher that includes lastPostTime
   const fetchFeed = async ({
@@ -106,16 +82,6 @@ export default function Feed() {
       throw new Error(`Failed to fetch feed: ${res.status}`);
     }
     const data = await res.json();
-
-    // Debug: Log some feed data to check like information
-    if (data.items && data.items.length > 0) {
-      console.log("Feed API Response - First post like data:", {
-        postId: data.items[0].postId,
-        likeCount: data.items[0].likeCount,
-        myLikeType: data.items[0].myLikeType,
-      });
-    }
-
     return data;
   };
 
@@ -133,58 +99,28 @@ export default function Feed() {
     initialPageParam: savedCursor ?? undefined,
     getNextPageParam: (lastPage) => {
       const c = lastPage.nextCursor;
-      if (!c) return undefined;
-      const finalTime =
-        c.lastDateTime ?? lastPage.items[lastPage.items.length - 1].createdAt;
-      return {
-        rankScore: c.rankScore,
-        postId: c.postId,
-        lastDateTime: finalTime,
-      };
+      return c
+        ? { ...c, lastDateTime: c.lastDateTime || initialTime }
+        : undefined;
     },
-    enabled: isTokenValid, // Enable the query only if the token is valid
+    enabled: !!token,
   });
 
-  // persist the newest cursor after fetches
+  // Save the latest cursor to localStorage
   useEffect(() => {
-    if (data?.pages.length) {
-      const last = data.pages[data.pages.length - 1];
-      const c = last.nextCursor;
-      if (c) {
-        const finalTime =
-          c.lastDateTime ?? last.items[last.items.length - 1].createdAt;
+    if (data?.pages && data.pages.length > 0) {
+      const lastPage = data.pages[data.pages.length - 1];
+      if (lastPage.nextCursor) {
         localStorage.setItem(
           "feedCursor",
           JSON.stringify({
-            rankScore: c.rankScore,
-            postId: c.postId,
-            lastDateTime: finalTime,
+            ...lastPage.nextCursor,
+            lastDateTime: lastPage.nextCursor.lastDateTime || initialTime,
           })
         );
       }
     }
-  }, [data]);
-
-  // Handle post updates (likes, comments, shares)
-  const handlePostUpdate = (updatedPost: FeedItem) => {
-    // Update the post in the cached data
-    queryClient.setQueryData(
-      ["feed"],
-      (oldData: { pages: FeedResponse[] } | undefined) => {
-        if (!oldData) return oldData;
-
-        return {
-          ...oldData,
-          pages: oldData.pages.map((page: FeedResponse) => ({
-            ...page,
-            items: page.items.map((item: FeedItem) =>
-              item.postId === updatedPost.postId ? updatedPost : item
-            ),
-          })),
-        };
-      }
-    );
-  };
+  }, [data, initialTime]);
 
   // de-duplicate by postId
   const uniquePosts = useMemo(() => {
@@ -233,12 +169,7 @@ export default function Feed() {
 
             {uniquePosts.length > 0 ? (
               uniquePosts.map((post) => (
-                <Post
-                  key={post.postId}
-                  post={post}
-                  token={token}
-                  onPostUpdate={handlePostUpdate}
-                />
+                <Post key={post.postId} post={post} token={token} />
               ))
             ) : (
               <div className="min-h-[400px] flex items-center justify-center">
@@ -267,7 +198,6 @@ export default function Feed() {
 
           {/* Sidebar */}
           <div className="lg:col-span-1 space-y-6">
-            <ProfileCard token={token} />
             <RecommendedUsers token={token} limit={5} />
           </div>
         </div>

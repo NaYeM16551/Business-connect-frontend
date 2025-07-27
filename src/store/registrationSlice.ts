@@ -8,6 +8,7 @@ interface RegistrationState {
   industry: string[]
   interests: string[]
   achievements: string[]
+  role : string // Added role to the state
 }
 
 const initialState: RegistrationState = {
@@ -16,7 +17,8 @@ const initialState: RegistrationState = {
   password: '',
   industry: [],
   interests: [],
-  achievements: []
+  achievements: [],
+  role: '' // Initialize role
 }
 
 export const registrationSlice = createSlice({
@@ -30,12 +32,16 @@ export const registrationSlice = createSlice({
       state.username = action.payload.username
       state.password = action.payload.password
     },
-    setIndustryAndInterests(state, action: PayloadAction<{ industry: string[]; interests: string[] }>) {
+    setIndustryAndInterests(state, action: PayloadAction<{ industry: string[]; interests: string[]; role: string }>) {
       state.industry = action.payload.industry
       state.interests = action.payload.interests
+      state.role = action.payload.role
     },
     setAchievements(state, action: PayloadAction<string[]>) {
       state.achievements = action.payload
+    },
+    setRole(state, action: PayloadAction<string>) {
+      state.role = action.payload
     },
     resetRegistration() {
       return initialState

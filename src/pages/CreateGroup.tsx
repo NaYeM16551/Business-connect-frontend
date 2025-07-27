@@ -12,6 +12,7 @@ import { Navigate, useNavigate } from "react-router-dom";
 
 interface CreateGroupData {
   name: string;
+  type:string;
   description: string;
   privacy: "PUBLIC" | "CLOSED" | "PRIVATE";
   coverImage?: string;
@@ -24,6 +25,7 @@ export default function CreateGroup() {
 
   const [formData, setFormData] = useState<CreateGroupData>({
     name: "",
+    type:"",
     description: "",
     privacy: "PUBLIC",
   });
@@ -44,6 +46,7 @@ export default function CreateGroup() {
     setIsSubmitting(true);
 
     try {
+      
       const res = await fetch("http://localhost:8080/api/groups", {
         method: "POST",
         headers: {
@@ -78,6 +81,7 @@ export default function CreateGroup() {
 
   const handleInputChange = (field: keyof CreateGroupData, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
+    console.log(`Updated ${field}:`, value);
   };
 
   if (!token) {
@@ -114,6 +118,19 @@ export default function CreateGroup() {
                   placeholder="Enter group name"
                   value={formData.name}
                   onChange={(e) => handleInputChange("name", e.target.value)}
+                  required
+                />
+              </div>
+              
+              {/* group type*/}
+              <div className="space-y-2">
+                <Label htmlFor="typeofthegroup">Group Type *</Label>
+                <Input
+                  id="type"
+                  type="text"
+                  placeholder="Enter group type"
+                  value={formData.type}
+                  onChange={(e) => handleInputChange("type", e.target.value)}
                   required
                 />
               </div>

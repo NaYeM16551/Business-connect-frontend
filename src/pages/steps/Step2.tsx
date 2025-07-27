@@ -1,94 +1,123 @@
 // src/pages/steps/Step2.tsx
-import React, { useState, useEffect } from 'react'
-import { useAppDispatch, useAppSelector } from '@/store/hooks'
-import { setIndustryAndInterests } from '@/store/registrationSlice'
+import { Button } from "@/components/ui/button";
 import {
   Card,
+  CardContent,
+  CardDescription,
   CardHeader,
   CardTitle,
-  CardDescription,
-  CardContent,
-} from '@/components/ui/card'
-import { Label } from '@/components/ui/label'
-import { Input } from '@/components/ui/input'
-import { Button } from '@/components/ui/button'
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { setIndustryAndInterests} from "@/store/registrationSlice";
+import { useEffect, useState } from "react";
 
 type Props = {
-  onNext: () => void
-  onBack: () => void
-}
+  onNext: () => void;
+  onBack: () => void;
+};
 
-const PREDEFINED_INDUSTRIES = ['EdTech', 'FinTech', 'HealthTech', 'Other']
+const PREDEFINED_INDUSTRIES = ["EdTech", "FinTech", "HealthTech", "Other"];
+
+const roles = [
+  "businessman",
+  "investor",
+  "entrepreneur",
+  "innovator",
+  "student",
+  "policy-maker",
+  "government-official",
+  "researcher",
+  "university-teacher",
+];
 
 export default function Step2({ onNext, onBack }: Props) {
-  const dispatch = useAppDispatch()
-  const { industry: savedIndustry, interests: savedInterests } =
-    useAppSelector((s) => s.registration)
+  const dispatch = useAppDispatch();
+  const { industry: savedIndustry, interests: savedInterests } = useAppSelector(
+    (s) => s.registration
+  );
 
-  const [selected, setSelected] = useState<string[]>([])
-  const [customIndustries, setCustomIndustries] = useState<string[]>([])
-  const [customInput, setCustomInput] = useState('')
-  const [interests, setInterests] = useState<string[]>([])
-  const [interestInput, setInterestInput] = useState('')
-
+  const [selected, setSelected] = useState<string[]>([]);
+  const [customIndustries, setCustomIndustries] = useState<string[]>([]);
+  const [customInput, setCustomInput] = useState("");
+  const [interests, setInterests] = useState<string[]>([]);
+  const [interestInput, setInterestInput] = useState("");
+  const [rolee, setRolee] = useState<string>("");
   // ---- seed from persisted Redux once on mount ----
   useEffect(() => {
     // populate pills
-    const predefined = savedIndustry.filter((i) =>
-      PREDEFINED_INDUSTRIES.includes(i) && i !== 'Other'
-    )
+    const predefined = savedIndustry.filter(
+      (i) => PREDEFINED_INDUSTRIES.includes(i) && i !== "Other"
+    );
     const customs = savedIndustry.filter(
       (i) => !PREDEFINED_INDUSTRIES.includes(i)
-    )
-    setSelected(predefined.concat(customs.length ? ['Other'] : []))
-    setCustomIndustries(customs)
-    setInterests(savedInterests)
-  }, [])
+    );
+    setSelected(predefined.concat(customs.length ? ["Other"] : []));
+    setCustomIndustries(customs);
+    setInterests(savedInterests);
+  }, []);
 
   // ---- handlers ----
   const toggleIndustry = (opt: string) => {
     setSelected((prev) => {
-      const on = prev.includes(opt)
+      const on = prev.includes(opt);
       // if untoggling Other, clear customs
-      if (opt === 'Other' && on) {
-        setCustomIndustries([])
-        setCustomInput('')
+      if (opt === "Other" && on) {
+        setCustomIndustries([]);
+        setCustomInput("");
       }
-      return on ? prev.filter((i) => i !== opt) : [...prev, opt]
-    })
-  }
+      return on ? prev.filter((i) => i !== opt) : [...prev, opt];
+    });
+  };
+
+  //only one role can be selected at a time
+  const toggleRoles = (opt: string) => {
+    setRolee(opt);
+    setSelected((prev) => {
+      const on = prev.includes(opt);
+      if (on) {
+        return prev.filter((i) => i !== opt);
+      }
+
+      // if selecting a new role, clear previous selection
+      return [opt];
+    });
+  };
 
   const addCustomIndustry = () => {
-    const v = customInput.trim()
-    if (!v || customIndustries.includes(v)) return
-    setCustomIndustries((prev) => [...prev, v])
-    setCustomInput('')
-  }
+    const v = customInput.trim();
+    if (!v || customIndustries.includes(v)) return;
+    setCustomIndustries((prev) => [...prev, v]);
+    setCustomInput("");
+  };
 
   const addInterest = () => {
-    const v = interestInput.trim()
-    if (!v || interests.includes(v)) return
-    setInterests((prev) => [...prev, v])
-    setInterestInput('')
-  }
+    const v = interestInput.trim();
+    if (!v || interests.includes(v)) return;
+    setInterests((prev) => [...prev, v]);
+    setInterestInput("");
+  };
 
   // final list combines pills (minus "Other") + customs
   const finalIndustries = [
-    ...selected.filter((i) => i !== 'Other'),
+    ...selected.filter((i) => i !== "Other"),
     ...customIndustries,
-  ]
+  ];
 
-  const canNext = finalIndustries.length > 0 && interests.length > 0
+  const canNext = finalIndustries.length > 0 && interests.length > 0;
 
   const handleNext = () => {
     dispatch(
       setIndustryAndInterests({
         industry: finalIndustries,
         interests,
-      })
-    )
-    onNext()
-  }
+        role: rolee,
+      }),
+      
+    );
+    onNext();
+  };
 
   // ---- render ----
   return (
@@ -113,8 +142,8 @@ export default function Step2({ onNext, onBack }: Props) {
                   onClick={() => toggleIndustry(opt)}
                   className={`px-4 py-2 rounded-full border font-medium transition ${
                     selected.includes(opt)
-                      ? 'bg-blue-100 border-blue-600 text-blue-600'
-                      : 'bg-white border-slate-300 text-slate-700 hover:bg-slate-100'
+                      ? "bg-blue-100 border-blue-600 text-blue-600"
+                      : "bg-white border-slate-300 text-slate-700 hover:bg-slate-100"
                   }`}
                 >
                   {opt}
@@ -124,7 +153,7 @@ export default function Step2({ onNext, onBack }: Props) {
           </div>
 
           {/* Custom industry input */}
-          {selected.includes('Other') && (
+          {selected.includes("Other") && (
             <div>
               <Label htmlFor="customIndustry">Add Other Industry</Label>
               <div className="mt-2 flex gap-2">
@@ -134,7 +163,8 @@ export default function Step2({ onNext, onBack }: Props) {
                   value={customInput}
                   onChange={(e) => setCustomInput(e.target.value)}
                   onKeyDown={(e) =>
-                    e.key === 'Enter' && (e.preventDefault(), addCustomIndustry())
+                    e.key === "Enter" &&
+                    (e.preventDefault(), addCustomIndustry())
                   }
                   className="flex-1"
                 />
@@ -158,6 +188,26 @@ export default function Step2({ onNext, onBack }: Props) {
             </div>
           )}
 
+          <div>
+            <Label>Role (choose one)</Label>
+            <div className="mt-2 flex flex-wrap gap-2">
+              {roles.map((opt) => (
+                <button
+                  key={opt}
+                  type="button"
+                  onClick={() => toggleRoles(opt)}
+                  className={`px-4 py-2 rounded-full border font-medium transition ${
+                    selected.includes(opt)
+                      ? "bg-blue-100 border-blue-600 text-blue-600"
+                      : "bg-white border-slate-300 text-slate-700 hover:bg-slate-100"
+                  }`}
+                >
+                  {opt}
+                </button>
+              ))}
+            </div>
+          </div>
+
           {/* Interests */}
           <div>
             <Label>Your Interests</Label>
@@ -167,7 +217,7 @@ export default function Step2({ onNext, onBack }: Props) {
                 value={interestInput}
                 onChange={(e) => setInterestInput(e.target.value)}
                 onKeyDown={(e) =>
-                  e.key === 'Enter' && (e.preventDefault(), addInterest())
+                  e.key === "Enter" && (e.preventDefault(), addInterest())
                 }
                 className="flex-1"
               />
@@ -199,5 +249,5 @@ export default function Step2({ onNext, onBack }: Props) {
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }

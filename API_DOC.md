@@ -51,7 +51,8 @@ Here’s the corrected Markdown snippet with proper fencing and spacing:
    3.2 [Reset Password](#32-reset-password)  
    3.3 [Change Password](#33-change-password)
 4. [Profile Management](#4-profile-management)  
-   4.1 [Update Profile](#41-update-profile)
+   4.1 [Get Current User](#41-get-current-user)  
+   4.2 [Update Profile](#42-update-profile)
 5. [Account Management](#5-account-management)  
    5.1 [Delete Account](#51-delete-account)
 
@@ -395,7 +396,62 @@ Authorization: Bearer <JWT_TOKEN>
 
 ## 4. Profile Management
 
-### 4.1 Update Profile
+### 4.1 Get Current User
+
+- **Method:** `GET`
+- **Endpoint:** `/me`
+- **Description:** Get the current authenticated user's profile details including username, email, role, industry, interests, achievements, and profile picture.
+
+**Headers:**
+
+```
+Authorization: Bearer <JWT_TOKEN>
+```
+
+**Responses:**
+
+- **200 OK**
+
+  ```json
+  {
+    "id": 12345,
+    "username": "M.M.Nabil",
+    "email": "nabil2005@gmail.com",
+    "role": "Businessman",
+    "industry": ["Technology", "Finance"],
+    "interests": ["Machine Learning", "Blockchain"],
+    "achievements": ["Published a research paper", "Speaker at TechConf 2024"],
+    "profilePictureUrl": "https://example.com/avatar.jpg"
+  }
+  ```
+
+- **401 Unauthorized**
+
+  ```json
+  {
+    "error": "Missing or invalid Authorization header"
+  }
+  ```
+
+- **404 Not Found**
+
+  ```json
+  {
+    "error": "User not found"
+  }
+  ```
+
+- **500 Internal Server Error**
+
+  ```json
+  {
+    "error": "Failed to get user details"
+  }
+  ```
+
+---
+
+### 4.2 Update Profile
 
 - **Method:** `PATCH`
 - **Endpoint:** `/update-profile`
@@ -1304,7 +1360,7 @@ All connection-related endpoints are prefixed with `/api/v1/connections`
 ### Get Following
 
 - **Method:** `GET`
-- **Endpoint:** `/following/{userID}`
+- **Endpoint:** `/following`
 - **Description:** Get list of users that the specified user is following
 - **Note:** Users can only view their own following list
 
@@ -1393,22 +1449,22 @@ All connection-related endpoints are prefixed with `/api/v1/connections`
   "items": [
     {
       "postId": 2202,
-            "authorId": 3,
-            "authorName": "nayem78",
-            "authorAvatarUrl": "",
-            "contentSnippet": "My post",
-            "mediaUrls": [],
-            "createdAt": "2025-06-02T18:52:09.294376504Z",
-            "likeCount": 0,
-            "commentCount": 0,
-            "shareCount": 22,
-            "rankScore": 1.1134309070442385,
-            "myLikeType": 0,
-            "parentPostId": null,
-            "parentAuthorName": null,
-            "parentAuthorAvatarUrl": null,
-            "parentAuthorId": null,
-            "parentPostContentSnippet": null
+      "authorId": 3,
+      "authorName": "nayem78",
+      "authorAvatarUrl": "",
+      "contentSnippet": "My post",
+      "mediaUrls": [],
+      "createdAt": "2025-06-02T18:52:09.294376504Z",
+      "likeCount": 0,
+      "commentCount": 0,
+      "shareCount": 22,
+      "rankScore": 1.1134309070442385,
+      "myLikeType": 0,
+      "parentPostId": null,
+      "parentAuthorName": null,
+      "parentAuthorAvatarUrl": null,
+      "parentAuthorId": null,
+      "parentPostContentSnippet": null
     }
     // ... more items
   ],

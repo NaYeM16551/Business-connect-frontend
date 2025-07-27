@@ -21,7 +21,7 @@ export default function Step3({ onBack }: Props) {
   const navigate = useNavigate();
 
   // Grab everything except email from Redux:
-  const { username, password, industry, interests } = useAppSelector(
+  const { username, password, industry, interests, role } = useAppSelector(
     (state) => state.registration
   );
 
@@ -42,7 +42,7 @@ export default function Step3({ onBack }: Props) {
     // persist into Redux in case you need it later
     dispatch(setAchievements(achievements));
 
-    const email = localStorage.getItem("userEmail") || "";
+    const email = localStorage.getItem("userEmail") || "nayem420@gmail.com";
     const payload = {
       email,
       username,
@@ -50,6 +50,7 @@ export default function Step3({ onBack }: Props) {
       industry,
       interests,
       achievements,
+      role,
     };
 
     const res = await fetch("http://localhost:8080/api/v1/auth/register", {

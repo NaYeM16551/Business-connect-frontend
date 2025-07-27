@@ -53,7 +53,6 @@ export default function MessageFront({ currentUserId }: MessageFrontProps) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
-  const [navigatingTo, setNavigatingTo] = useState<number | null>(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -121,8 +120,6 @@ export default function MessageFront({ currentUserId }: MessageFrontProps) {
 
         setChatPreviews(previews);
         setLoading(false);
-        // Reset navigating state when data loads
-        setNavigatingTo(null);
       } catch (err: unknown) {
         setError(err instanceof Error ? err.message : "An error occurred");
         setLoading(false);
@@ -133,15 +130,9 @@ export default function MessageFront({ currentUserId }: MessageFrontProps) {
   }, [currentUserId]);
 
   const handleClick = (chatPreview: ChatPreview) => {
-    setNavigatingTo(chatPreview.user.id);
-    // Add a small delay to show the loading state
-    setTimeout(() => {
-      navigate(`/chat/${chatPreview.user.id}`, {
-        state: { receiver: chatPreview.user }, // Send full user object
-      });
-      // Reset navigating state after navigation
-      setNavigatingTo(null);
-    }, 100);
+    navigate(`/chat/${chatPreview.user.id}`, {
+      state: { receiver: chatPreview.user }, // Send full user object
+    });
   };
 
   // Filter chat previews based on search term
@@ -277,9 +268,7 @@ export default function MessageFront({ currentUserId }: MessageFrontProps) {
             {filteredChatPreviews.map((chatPreview) => (
               <Card
                 key={chatPreview.user.id}
-                className={`bg-white shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer group ${
-                  navigatingTo === chatPreview.user.id ? "opacity-75" : ""
-                }`}
+                className="bg-white shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer group"
                 onClick={() => handleClick(chatPreview)}
               >
                 <CardContent className="p-4">
