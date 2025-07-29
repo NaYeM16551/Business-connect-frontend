@@ -19,6 +19,9 @@ const MySubmissionsPage = ({ currentUserId }: { currentUserId: number }) => {
     axios
       .get(`http://57.159.26.157:8080/api/v1/${currentUserId}/contests/${contestId}/submissions`, {
         params: { id: userId },
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
       })
       .then((res) => setSubmissions(res.data));
   }, [contestId]);

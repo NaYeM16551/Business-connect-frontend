@@ -9,12 +9,13 @@ import {
 } from "@/components/ui/dropdown-menu";
 import {
   Bell,
-  ChevronDown,
   Home,
   LogOut,
   MessageSquare,
   User,
   Users,
+  ChevronDown,
+  Trophy,
 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -92,7 +93,7 @@ export default function Navbar() {
               to="/contests"
               className="flex items-center space-x-1 text-slate-700 hover:text-blue-600"
             >
-              <Bell className="w-7 h-7" />
+              <Trophy className="w-5 h-5" />
               <span>Contests</span>
             </Link>
           </div>
