@@ -268,7 +268,7 @@ export default function Feed() {
           {/* Sidebar */}
           <div className="lg:col-span-1 space-y-6">
             <ProfileCard token={token} />
-            <RecommendedUsers token={token} limit={5} />
+            <RecommendedUsers token={token} limit={40} />
           </div>
         </div>
       </div>
