@@ -36,7 +36,7 @@ const VerifyEmail = () => {
     (async (t: string) => {
       try {
         const response = await fetch(
-          `http://57.159.26.157:8080/api/v1/auth/register-verify?token=${t}`,
+          `http://57.159.26.157:8080/api/v1/auth/verify-email?token=${t}`,
           {
             method: "GET",
             headers: { "Content-Type": "application/json" },
@@ -44,10 +44,9 @@ const VerifyEmail = () => {
         );
         const data = await response.json();
 
-
         if (response.ok) {
-          localStorage.setItem("userEmail",data.email);
-          localStorage.setItem("token",data.token);
+          localStorage.setItem("userEmail", data.email);
+          localStorage.setItem("token", data.token);
           setVerificationState("success");
           toast({
             title: "Email Verified Successfully",
